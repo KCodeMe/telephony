@@ -9,13 +9,12 @@ include $(TOPDIR)/rules.mk
 include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME:=dahdi-linux
-PKG_RELEASE:=1
+PKG_VERSION:=3.4.0
+PKG_RELEASE:=3
 
-PKG_SOURCE_PROTO:=git
-PKG_SOURCE_URL:=https://github.com/asterisk/dahdi-linux.git
-PKG_SOURCE_DATE=2024-04-12
-PKG_SOURCE_VERSION:=83d89b64d9151dbe4eb53b9ebc8640a08fcf4d63
-PKG_MIRROR_HASH:=890c8f3dbc31f557a1a5e9a1d3fb039dee6b76a2c29ba39520e2be8264a85fa1
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+PKG_SOURCE_URL:=https://github.com/asterisk/$(PKG_NAME)/releases/download/v$(PKG_VERSION)
+PKG_HASH:=b1344d61b86f68ae3fb774b76657216c6bf3cca89e04bfc6c93dbefccc88c654
 
 PKG_LICENSE:=GPL-2.0
 PKG_LICENSE_FILES:=LICENSE
@@ -43,7 +42,7 @@ endef
 define KernelPackage/dahdi-echocan-oslec
   SUBMENU:=Voice over IP
   TITLE:=DAHDI OSLEC echo canceller support
-  DEPENDS:=kmod-dahdi +kmod-echo
+  DEPENDS:=kmod-dahdi +LINUX_6_12:kmod-echo +!LINUX_6_12:kmod-oslec
   URL:=http://www.asterisk.org/
   FILES:=$(PKG_BUILD_DIR)/drivers/dahdi/dahdi_echocan_oslec.$(LINUX_KMOD_SUFFIX)
   AUTOLOAD:=$(call AutoProbe,dahdi_echocan_oslec)
